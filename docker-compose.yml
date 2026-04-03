@@ -1,0 +1,19 @@
+services:
+  central-brain:
+    build:
+      context: ./core
+      dockerfile: Dockerfile.dev
+    container_name: central-brain-dev
+    network_mode: host
+    volumes:
+      - ./core:/app
+      # Proteggiamo i node_modules del container da quelli locali
+      - /app/node_modules 
+    environment:
+      - TZ=Europe/Rome
+      - NODE_ENV=development
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - ADMIN_ID=${ADMIN_ID}
+      - DOWNLOADER_IP=192.168.8.129
+      - DOWNLOADER_MAC=bc:30:5b:bf:95:71
+    restart: unless-stopped

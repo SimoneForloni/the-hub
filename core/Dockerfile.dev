@@ -1,0 +1,14 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Installiamo le dipendenze globali per lo sviluppo
+RUN npm install -g typescript tsx
+
+COPY package*.json ./
+RUN npm install
+
+# Non copiamo il codice qui! Lo passeremo tramite il volume del compose
+# per avere il "Live Reload"
+
+CMD ["tsx", "watch", "src/index.ts"]
