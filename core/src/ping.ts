@@ -27,6 +27,6 @@ export const waitUntilOnline = (): Promise<boolean> => {
 			}
 			setTimeout(check, pingIntervalMs);
 		};
-		check;
+		check();
 	});
 }
