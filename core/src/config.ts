@@ -3,7 +3,7 @@ dotenv.config(); // Carica eventuali file .env locali
 
 export const CONFIG = {
 	downloader: {
-		ip:  process.env.DOWNLOADER_IP  || '192.168.1.129',
+		ip:  process.env.DOWNLOADER_IP  || '192.168.8.129',
 		mac: process.env.DOWNLOADER_MAC || 'bc:30:5b:bf:95:71',
 	},
 	wol: {
