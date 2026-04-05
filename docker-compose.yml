@@ -16,4 +16,3 @@ services:
       - ADMIN_ID=${ADMIN_ID}
       - DOWNLOADER_IP=192.168.8.129
       - DOWNLOADER_MAC=bc:30:5b:bf:95:71
-    restart: unless-stopped

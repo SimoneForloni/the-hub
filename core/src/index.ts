@@ -1,22 +1,21 @@
+import { startScheduler } from './scheduler.js';
 import { CONFIG } from './config.js';
-import * as wol from 'node-wol';
-import * as cron from 'node-cron';
 
-console.log("🧠 Core in modalità Sviluppo avviato...");
-console.log("📡 In ascolto per l'Optiplex all'IP:", CONFIG.downloader.ip);
+const log = (msg: string) =>
+  console.log(`[${new Date().toISOString()}] [CORE] ${msg}`);
 
-const wakeDownloader = () => {
-    console.log('Tentativo di risveglio:', CONFIG.downloader.ip, '[' + CONFIG.downloader.mac + ']');
+log('Avviato.');
+log(`Downloader: ${CONFIG.downloader.ip} [${CONFIG.downloader.mac}]`);
+log(`Cron: "${CONFIG.wol.cronExpression}"`);
 
-    wol.wake(CONFIG.downloader.mac, (err) => {
-        if (err) {
-            console.error("❌ Errore durante l'invio del WOL:", err);
-        } else {
-            console.log("✅ Magic Packet inviato con successo!");
-        }
-    });
-}
+const task = startScheduler();
 
-cron.schedule('0 7 * * *', () => {
-    wakeDownloader();
-})
+/* Shutdown pulito */
+const shutdown = (signal: string) => {
+  log(`Segnale ${signal} ricevuto. Arresto in corso...`);
+  task.stop();
+  process.exit(0);
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT',  () => shutdown('SIGINT'));
